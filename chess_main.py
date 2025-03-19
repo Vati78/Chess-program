@@ -6,7 +6,7 @@ pg.init()
 """
 Constants and initialization
 """
-SQUARE = 701
+SQUARE = 70
 WIDTH = 8*SQUARE
 HEIGHT = 8*SQUARE
 
