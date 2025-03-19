@@ -26,7 +26,7 @@ class ChessAI:
         """
         # Flatten the 2D board to a tuple (which is hashable)
         return tuple(tuple(row) for row in position)
-    
+
     def get_available_moves(self, position, player, get_type, remove_illegal):
         """
         Get all valid moves for the current player
@@ -34,11 +34,16 @@ class ChessAI:
         valid_moves = []
         for rank in range(8):
             for col in range(8):
+                # Only process non-empty squares with pieces of the current player
                 if position[rank][col] != " " and position[rank][col][0] == player:
-                    piece_type = get_type(col, rank)
-                    legal_moves = remove_illegal(player, col, rank, piece_type.legal_moves(col, rank))
-                    for move in legal_moves:
-                        valid_moves.append((col, rank, move[0], move[1]))
+                    try:
+                        piece_type = get_type(col, rank)
+                        legal_moves = remove_illegal(player, col, rank, piece_type.legal_moves(col, rank))
+                        for move in legal_moves:
+                            valid_moves.append((col, rank, move[0], move[1]))
+                    except (IndexError, TypeError):
+                        # Skip this position if there's an error accessing the piece type
+                        continue
         return valid_moves
     
     def evaluate_position(self, position):
@@ -49,7 +54,7 @@ class ChessAI:
         score = 0
         
         # Material evaluation
-        for rank in range(8):
+        for rank in range(8 ):
             for col in range(8):
                 piece = position[rank][col]
                 if piece != " ":
@@ -449,7 +454,7 @@ class ChessGame:
 
 # Function to train the AI
 def train_chess_ai(episodes=5000):
-    import chess_main as chess_game
+    import chess_main_versionmathurin as chess_game
     
     # Create AI
     ai = ChessAI()
